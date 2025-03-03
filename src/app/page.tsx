@@ -1,24 +1,41 @@
 "use client";
 
-import Image from "next/image";
+import React, { useState, useEffect } from 'react';
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import React, { useState, useEffect } from 'react';
+
+const API_KEY = "2180e28dd6484d1ab05574b1dc53f539";
+const BASE_URL = "https://api.rawg.io/api";
 
 export default function Home() {
-  const [trendingGames, setTrendingGames] = useState([]);
-  const [news, setNews] = useState([]);
-
+  const [relevantGames, setRelevantGames] = useState([]);
+  const [newGames, setNewGames] = useState([]);
+  const [addedGames, setAddedGames] = useState([]);
+  const currentYear = new Date().getFullYear();
+  const today = new Date();
+const eightMonthsAgo = new Date();
+eightMonthsAgo.setMonth(today.getMonth() - 8);
+const startDate = eightMonthsAgo.toISOString().split("T")[0]; // Últimos 8 meses
+const endDate = today.toISOString().split("T")[0]; // Hoy
   useEffect(() => {
-    // Simulación de una llamada a API para juegos en tendencia y noticias
-    setTrendingGames([
-      { id: 1, name: 'Cyberpunk 2077', image: 'cyberpunk.jpg' },
-      { id: 2, name: 'The Witcher 3', image: 'witcher3.jpg' },
-    ]);
-    setNews([
-      { id: 1, title: 'Nuevo lanzamiento de juego', link: '#' },
-      { id: 2, title: 'Oferta exclusiva en plataforma oficial', link: '#' },
-    ]);
+    // Juegos más relevantes: ordenados por puntuación de Metacritic descendente
+    fetch(`${BASE_URL}/games?key=${API_KEY}&dates=${startDate},${endDate}&ordering=-added&page_size=10`)
+      .then(res => res.json())
+      .then(data => setRelevantGames(data.results))
+      .catch(err => console.error("Error fetching relevant games:", err));
+
+    // Juegos más nuevos: filtrados para el año actual, ordenados por fecha de lanzamiento descendente
+   
+    fetch(`${BASE_URL}/games?key=${API_KEY}&dates=${currentYear}-01-01,${currentYear}-12-31&ordering=-released&page_size=10`)
+      .then(res => res.json())
+      .then(data => setNewGames(data.results))
+      .catch(err => console.error("Error fetching new games:", err));
+
+    // Juegos más jugados: ordenados por "added" descendente
+    fetch(`${BASE_URL}/games?key=${API_KEY}&ordering=-added&page_size=10`)
+      .then(res => res.json())
+      .then(data => setAddedGames(data.results))
+      .catch(err => console.error("Error fetching added games:", err));
   }, []);
 
   return (
@@ -34,12 +51,14 @@ export default function Home() {
             className="search-bar w-full max-w-md p-2 rounded border-2 border-[#00A9D4] bg-[#240047] text-[#40FFDC] placeholder-[#00A9D4] focus:outline-none focus:border-[#40FFDC]"
           />
         </header>
-        <section className="trending py-8 px-4">
-          <h2 className="text-2xl font-bold mb-6 text-[#00A9D4]">Tendencias actuales</h2>
+
+        {/* Juegos más relevantes */}
+        <section className="relevant py-8 px-4">
+          <h2 className="text-2xl font-bold mb-6 text-[#00A9D4]">Juegos más populares actualmente</h2>
           <div className="game-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {trendingGames.map(game => (
+            {relevantGames.map(game => (
               <div key={game.id} className="game-card bg-[#240047] rounded-lg p-4 shadow-lg hover:shadow-xl transition-shadow">
-                <img src={game.image} alt={game.name} className="w-full h-40 object-cover rounded" />
+                <img src={game.background_image} alt={game.name} className="w-full h-40 object-cover rounded" />
                 <h3 className="mt-4 text-xl font-semibold">{game.name}</h3>
                 <a 
                   href={`/game/${game.id}`} 
@@ -51,20 +70,43 @@ export default function Home() {
             ))}
           </div>
         </section>
-        <section className="news py-8 px-4">
-          <h2 className="text-2xl font-bold mb-4 text-[#00A9D4]">Noticias y Novedades</h2>
-          <ul className="space-y-3">
-            {news.map(item => (
-              <li key={item.id}>
+
+        {/* Juegos más nuevos */}
+        <section className="new py-8 px-4">
+          <h2 className="text-2xl font-bold mb-6 text-[#00A9D4]">Juegos más nuevos</h2>
+          <div className="game-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {newGames.map(game => (
+              <div key={game.id} className="game-card bg-[#240047] rounded-lg p-4 shadow-lg hover:shadow-xl transition-shadow">
+                <img src={game.background_image} alt={game.name} className="w-full h-40 object-cover rounded" />
+                <h3 className="mt-4 text-xl font-semibold">{game.name}</h3>
                 <a 
-                  href={item.link} 
-                  className="text-lg text-[#40FFDC] hover:text-[#00A9D4] transition-colors"
+                  href={`/game/${game.id}`} 
+                  className="inline-block mt-2 text-[#00A9D4] hover:underline"
                 >
-                  {item.title}
+                  Ver detalles
                 </a>
-              </li>
+              </div>
             ))}
-          </ul>
+          </div>
+        </section>
+
+        {/* Juegos más jugados */}
+        <section className="added py-8 px-4">
+          <h2 className="text-2xl font-bold mb-6 text-[#00A9D4]">Juegos más jugados</h2>
+          <div className="game-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {addedGames.map(game => (
+              <div key={game.id} className="game-card bg-[#240047] rounded-lg p-4 shadow-lg hover:shadow-xl transition-shadow">
+                <img src={game.background_image} alt={game.name} className="w-full h-40 object-cover rounded" />
+                <h3 className="mt-4 text-xl font-semibold">{game.name}</h3>
+                <a 
+                  href={`/game/${game.id}`} 
+                  className="inline-block mt-2 text-[#00A9D4] hover:underline"
+                >
+                  Ver detalles
+                </a>
+              </div>
+            ))}
+          </div>
         </section>
       </div>
 
