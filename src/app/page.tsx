@@ -1,101 +1,74 @@
+"use client";
+
 import Image from "next/image";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import React, { useState, useEffect } from 'react';
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [trendingGames, setTrendingGames] = useState([]);
+  const [news, setNews] = useState([]);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+  useEffect(() => {
+    // Simulación de una llamada a API para juegos en tendencia y noticias
+    setTrendingGames([
+      { id: 1, name: 'Cyberpunk 2077', image: 'cyberpunk.jpg' },
+      { id: 2, name: 'The Witcher 3', image: 'witcher3.jpg' },
+    ]);
+    setNews([
+      { id: 1, title: 'Nuevo lanzamiento de juego', link: '#' },
+      { id: 2, title: 'Oferta exclusiva en plataforma oficial', link: '#' },
+    ]);
+  }, []);
+
+  return (
+    <div id="body" className="min-h-screen bg-[#1C0021] text-[#40FFDC]">
+      <Navbar />
+
+      <div className="home">
+        <header className="hero bg-[#1C3166] py-10 px-4 text-center">
+          <h1 className="text-4xl font-bold mb-4">Bienvenido a la Mejor Plataforma Gamer</h1>
+          <input 
+            type="text" 
+            placeholder="Buscar juegos por nombre, género o popularidad..." 
+            className="search-bar w-full max-w-md p-2 rounded border-2 border-[#00A9D4] bg-[#240047] text-[#40FFDC] placeholder-[#00A9D4] focus:outline-none focus:border-[#40FFDC]"
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        </header>
+        <section className="trending py-8 px-4">
+          <h2 className="text-2xl font-bold mb-6 text-[#00A9D4]">Tendencias actuales</h2>
+          <div className="game-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {trendingGames.map(game => (
+              <div key={game.id} className="game-card bg-[#240047] rounded-lg p-4 shadow-lg hover:shadow-xl transition-shadow">
+                <img src={game.image} alt={game.name} className="w-full h-40 object-cover rounded" />
+                <h3 className="mt-4 text-xl font-semibold">{game.name}</h3>
+                <a 
+                  href={`/game/${game.id}`} 
+                  className="inline-block mt-2 text-[#00A9D4] hover:underline"
+                >
+                  Ver detalles
+                </a>
+              </div>
+            ))}
+          </div>
+        </section>
+        <section className="news py-8 px-4">
+          <h2 className="text-2xl font-bold mb-4 text-[#00A9D4]">Noticias y Novedades</h2>
+          <ul className="space-y-3">
+            {news.map(item => (
+              <li key={item.id}>
+                <a 
+                  href={item.link} 
+                  className="text-lg text-[#40FFDC] hover:text-[#00A9D4] transition-colors"
+                >
+                  {item.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      </div>
+
+      <Footer />
     </div>
   );
 }
