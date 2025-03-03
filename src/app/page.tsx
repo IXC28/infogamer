@@ -4,39 +4,47 @@ import React, { useState, useEffect } from 'react';
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
+interface Game {
+  id: number;
+  name: string;
+  background_image: string;
+  // Agrega otras propiedades si es necesario
+}
+
 const API_KEY = "2180e28dd6484d1ab05574b1dc53f539";
 const BASE_URL = "https://api.rawg.io/api";
 
 export default function Home() {
-  const [relevantGames, setRelevantGames] = useState([]);
-  const [newGames, setNewGames] = useState([]);
-  const [addedGames, setAddedGames] = useState([]);
+  const [relevantGames, setRelevantGames] = useState<Game[]>([]);
+  const [newGames, setNewGames] = useState<Game[]>([]);
+  const [addedGames, setAddedGames] = useState<Game[]>([]);
+
   const currentYear = new Date().getFullYear();
   const today = new Date();
-const eightMonthsAgo = new Date();
-eightMonthsAgo.setMonth(today.getMonth() - 8);
-const startDate = eightMonthsAgo.toISOString().split("T")[0]; // Últimos 8 meses
-const endDate = today.toISOString().split("T")[0]; // Hoy
+  const eightMonthsAgo = new Date();
+  eightMonthsAgo.setMonth(today.getMonth() - 8);
+  const startDate = eightMonthsAgo.toISOString().split("T")[0]; // Últimos 8 meses
+  const endDate = today.toISOString().split("T")[0]; // Hoy
+
   useEffect(() => {
-    // Juegos más relevantes: ordenados por puntuación de Metacritic descendente
+    // Juegos más relevantes: filtrados por fecha (últimos 8 meses) y ordenados por "added" descendente
     fetch(`${BASE_URL}/games?key=${API_KEY}&dates=${startDate},${endDate}&ordering=-added&page_size=10`)
       .then(res => res.json())
       .then(data => setRelevantGames(data.results))
       .catch(err => console.error("Error fetching relevant games:", err));
 
-    // Juegos más nuevos: filtrados para el año actual, ordenados por fecha de lanzamiento descendente
-   
+    // Juegos más nuevos: filtrados para el año actual y ordenados por fecha de lanzamiento descendente
     fetch(`${BASE_URL}/games?key=${API_KEY}&dates=${currentYear}-01-01,${currentYear}-12-31&ordering=-released&page_size=10`)
       .then(res => res.json())
       .then(data => setNewGames(data.results))
       .catch(err => console.error("Error fetching new games:", err));
 
-    // Juegos más jugados: ordenados por "added" descendente
+    // Juegos más jugados: ordenados por "added" descendente (sin filtro de fechas)
     fetch(`${BASE_URL}/games?key=${API_KEY}&ordering=-added&page_size=10`)
       .then(res => res.json())
       .then(data => setAddedGames(data.results))
       .catch(err => console.error("Error fetching added games:", err));
-  }, []);
+  }, [startDate, endDate, currentYear]);
 
   return (
     <div id="body" className="min-h-screen bg-[#1C0021] text-[#40FFDC]">
