@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import Filter from "../components/Filter";
 
 // Definimos interfaces para tipificar los datos
 interface Screenshot {
@@ -82,53 +83,92 @@ export default function Home() {
   const [relevantGames, setRelevantGames] = useState<Game[]>([]);
   const [newGames, setNewGames] = useState<Game[]>([]);
   const [addedGames, setAddedGames] = useState<Game[]>([]);
-
+  const [showFilters, setShowFilters] = useState(false);
+  const [filters, setFilters] = useState({
+    tags: [] as string[],
+    devices: [] as string[],
+    platforms: [] as string[],
+  });
+  
   const currentYear = new Date().getFullYear();
   const today = new Date();
   const eightMonthsAgo = new Date();
   eightMonthsAgo.setMonth(today.getMonth() - 8);
-  const startDate = eightMonthsAgo.toISOString().split("T")[0]; // Últimos 8 meses
-  const endDate = today.toISOString().split("T")[0]; // Hoy
+  const startDate = eightMonthsAgo.toISOString().split("T")[0];
+  const endDate = today.toISOString().split("T")[0];
+
+  // Callback para recibir los filtros actualizados desde Filter
+  const updateFilters = (newFilters: typeof filters) => {
+    setFilters(newFilters);
+    //console.log("Filtros en Home:", newFilters);
+  };
 
   useEffect(() => {
-    // Juegos más relevantes: filtrados por fecha (últimos 8 meses) y ordenados por "added" descendente
+    // Juegos más relevantes
     fetch(`${BASE_URL}/games?key=${API_KEY}&dates=${startDate},${endDate}&ordering=-added&page_size=10`)
-      .then(res => res.json())
-      .then(data => setRelevantGames(data.results))
-      .catch(err => console.error("Error fetching relevant games:", err));
+      .then((res) => res.json())
+      .then((data) => setRelevantGames(data.results))
+      .catch((err) => console.error("Error fetching relevant games:", err));
 
-    // Juegos más nuevos: filtrados para el año actual y ordenados por fecha de lanzamiento descendente
+    // Juegos más nuevos
     fetch(`${BASE_URL}/games?key=${API_KEY}&dates=${currentYear}-01-01,${currentYear}-12-31&ordering=-released&page_size=10`)
-      .then(res => res.json())
-      .then(data => setNewGames(data.results))
-      .catch(err => console.error("Error fetching new games:", err));
+      .then((res) => res.json())
+      .then((data) => setNewGames(data.results))
+      .catch((err) => console.error("Error fetching new games:", err));
 
-    // Juegos más jugados: ordenados por "added" descendente (sin filtro de fechas)
+    // Juegos más jugados
     fetch(`${BASE_URL}/games?key=${API_KEY}&ordering=-added&page_size=10`)
-      .then(res => res.json())
-      .then(data => setAddedGames(data.results))
-      .catch(err => console.error("Error fetching added games:", err));
+      .then((res) => res.json())
+      .then((data) => setAddedGames(data.results))
+      .catch((err) => console.error("Error fetching added games:", err));
   }, [startDate, endDate, currentYear]);
 
+  useEffect(() => {
+    //filters contiene los filtros
+    console.log("Filtros actualizados en Home: filters::", filters);
+  }, [filters]);
+
   return (
-    <div id="body" className="min-h-screen bg-gray-300 text-black">
+    <div id="body" className="min-h-screen bg-gradient-to-r from-gray-900 via-red-600 text-black">
       <Navbar />
 
       <div className="home">
-        <header className="hero bg-red-600 py-10 px-4 text-center">
+        <header className="hero py-10 px-4 text-center">
           <h1 className="text-4xl font-bold mb-4 text-white">
             Bienvenido a la Mejor Plataforma Gamer
           </h1>
-          <input 
-            type="text" 
-            placeholder="Buscar juegos por nombre, género o popularidad..."
-            className="search-bar w-full max-w-md p-2 rounded border-2 border-red-600 bg-black text-white placeholder-red-600 focus:outline-none focus:border-red-600"
-          />
+          <div className="flex justify-center items-center gap-2">
+            <input 
+              type="text" 
+              placeholder="Buscar juegos por nombre, género o popularidad..."
+              className="search-bar w-full max-w-md p-2 rounded border-2 border-red-600 bg-black text-white placeholder-red-300 focus:outline-none focus:border-red-600"
+            />
+            <button 
+              onClick={() => setShowFilters((prev) => !prev)}
+              className="bg-black text-white border-2 border-red-600 p-2 rounded hover:bg-gray-800 focus:outline-none"
+            >
+              Filtros
+            </button>
+          </div>
+          {showFilters && <Filter onFiltersChange={updateFilters} />} {/* Aquí llamas a la componente Filter */}
+          
+          {/* Sección del video de presentación */}
+          <section className="video-presentation relative w-4/5 mx-auto h-72 md:h-[500px] overflow-hidden shadow-2xl transition-transform duration-300 hover:scale-105 mt-10">
+            <img 
+              className="w-full h-full object-cover rounded-2xl" 
+              src="/presentacion.gif" 
+              alt="Presentación del gaming" 
+            />
+            <div className="absolute inset-0 opacity-40"></div>
+            <div className="absolute inset-0 flex items-center justify-center">
+              {/* Contenido adicional, si se requiere */}
+            </div>
+          </section>
         </header>
 
-        {/* Juegos más relevantes */}
+        {/* Sección de juegos más relevantes */}
         <section className="relevant py-8 px-4">
-          <h2 className="text-3xl md:text-4xl font-extrabold uppercase tracking-wide mb-6 text-red-600 drop-shadow-md">
+          <h2 className="text-2xl font-bold mb-6 text-white">
             Juegos más populares actualmente
           </h2>
           <div className="game-grid flex justify-center">
@@ -136,9 +176,9 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Juegos más nuevos */}
+        {/* Sección de juegos más nuevos */}
         <section className="new py-8 px-4">
-          <h2 className="text-3xl md:text-4xl font-extrabold uppercase tracking-wide mb-6 text-red-600 drop-shadow-md">
+          <h2 className="text-2xl font-bold mb-6 text-white">
             Juegos más nuevos
           </h2>
           <div className="game-grid flex justify-center">
@@ -146,9 +186,9 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Juegos más jugados */}
+        {/* Sección de juegos más jugados */}
         <section className="added py-8 px-4">
-          <h2 className="text-3xl md:text-4xl font-extrabold uppercase tracking-wide mb-6 text-red-600 drop-shadow-md">
+          <h2 className="text-2xl font-bold mb-6 text-white">
             Juegos más jugados
           </h2>
           <div className="game-grid flex justify-center">
