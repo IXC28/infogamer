@@ -4,12 +4,12 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav className="bg-gradient-to-r from-[#1C3166] via-[#240047] to-[#1C0021] border-b border-[#00A9D4]">
+    <nav className="bg-gradient-to-r from-black via-red-600 to-black border-b">
       <div className="max-w-7xl mx-auto px-5">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <a href="/" className="text-[#40FFDC] text-2xl font-bold">
+            <a href="/" className="text-white text-2xl font-bold">
               InfoGamer
             </a>
           </div>
@@ -18,7 +18,7 @@ const Navbar = () => {
             <li>
               <a
                 href="/"
-                className="text-[#00A9D4] px-3 py-2 rounded transition-colors hover:text-[#40FFDC]"
+                className="text-white px-3 py-2 rounded transition-colors hover:text-red-500"
               >
                 Inicio
               </a>
@@ -26,7 +26,7 @@ const Navbar = () => {
             <li>
               <a
                 href="/explorer"
-                className="text-[#00A9D4] px-3 py-2 rounded transition-colors hover:text-[#40FFDC]"
+                className="text-white px-3 py-2 rounded transition-colors hover:text-red-500"
               >
                 Explorador de Juegos
               </a>
@@ -34,7 +34,7 @@ const Navbar = () => {
             <li>
               <a
                 href="/ranking"
-                className="text-[#00A9D4] px-3 py-2 rounded transition-colors hover:text-[#40FFDC]"
+                className="text-white px-3 py-2 rounded transition-colors hover:text-red-500"
               >
                 Ranking
               </a>
@@ -42,7 +42,7 @@ const Navbar = () => {
             <li>
               <a
                 href="/downloads"
-                className="text-[#00A9D4] px-3 py-2 rounded transition-colors hover:text-[#40FFDC]"
+                className="text-white px-3 py-2 rounded transition-colors hover:text-red-500"
               >
                 Descargas
               </a>
@@ -50,7 +50,7 @@ const Navbar = () => {
             <li>
               <a
                 href="/community"
-                className="text-[#00A9D4] px-3 py-2 rounded transition-colors hover:text-[#40FFDC]"
+                className="text-white px-3 py-2 rounded transition-colors hover:text-red-500"
               >
                 Comunidad
               </a>
@@ -60,7 +60,7 @@ const Navbar = () => {
           <div className="md:hidden">
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              className="text-[#00A9D4] hover:text-[#40FFDC] focus:outline-none"
+              className="text-white hover:text-red-500 focus:outline-none"
             >
               {menuOpen ? (
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -81,7 +81,7 @@ const Navbar = () => {
               <li>
                 <a
                   href="/"
-                  className="block text-[#00A9D4] px-3 py-2 rounded transition-colors hover:text-[#40FFDC]"
+                  className="block text-white px-3 py-2 rounded transition-colors hover:text-red-500"
                 >
                   Inicio
                 </a>
@@ -89,7 +89,7 @@ const Navbar = () => {
               <li>
                 <a
                   href="/explorer"
-                  className="block text-[#00A9D4] px-3 py-2 rounded transition-colors hover:text-[#40FFDC]"
+                  className="block text-white px-3 py-2 rounded transition-colors hover:text-red-500"
                 >
                   Explorador de Juegos
                 </a>
@@ -97,7 +97,7 @@ const Navbar = () => {
               <li>
                 <a
                   href="/ranking"
-                  className="block text-[#00A9D4] px-3 py-2 rounded transition-colors hover:text-[#40FFDC]"
+                  className="block text-white px-3 py-2 rounded transition-colors hover:text-red-500"
                 >
                   Ranking
                 </a>
@@ -105,7 +105,7 @@ const Navbar = () => {
               <li>
                 <a
                   href="/downloads"
-                  className="block text-[#00A9D4] px-3 py-2 rounded transition-colors hover:text-[#40FFDC]"
+                  className="block text-white px-3 py-2 rounded transition-colors hover:text-red-500"
                 >
                   Descargas
                 </a>
@@ -113,7 +113,7 @@ const Navbar = () => {
               <li>
                 <a
                   href="/community"
-                  className="block text-[#00A9D4] px-3 py-2 rounded transition-colors hover:text-[#40FFDC]"
+                  className="block text-white px-3 py-2 rounded transition-colors hover:text-red-500"
                 >
                   Comunidad
                 </a>
