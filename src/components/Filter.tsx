@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
 
-const Filter = ({ onFiltersChange }) => {
-  const [filters, setFilters] = useState({
-    tags: [],
-    devices: [],
-    platforms: []
-  });
+interface FilterProps {
+  onFiltersChange: (newFilters: { tags: string[]; devices: string[]; platforms: string[] }) => void;
+  initialFilters?: { tags: string[]; devices: string[]; platforms: string[] };
+}
+
+const Filter: React.FC<FilterProps> = ({
+  onFiltersChange,
+  initialFilters = { tags: [], devices: [], platforms: [] },
+}) => {
+  const [filters, setFilters] = useState(initialFilters);
 
   // Función para manejar cambios en los filtros
-  const handleFilterChange = (category, value, e) => {
+  const handleFilterChange = (category: 'tags' | 'devices' | 'platforms', value: string, e: React.ChangeEvent<HTMLInputElement>) => {
     setFilters((prev) => {
       const current = prev[category];
       if (e.target.checked) {

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Filter from "../components/Filter";
@@ -80,6 +81,7 @@ const GameCarousel = ({ games }: { games: Game[] }) => {
 };
 
 export default function Home() {
+  const router = useRouter();
   const [relevantGames, setRelevantGames] = useState<Game[]>([]);
   const [newGames, setNewGames] = useState<Game[]>([]);
   const [addedGames, setAddedGames] = useState<Game[]>([]);
@@ -89,7 +91,8 @@ export default function Home() {
     devices: [] as string[],
     platforms: [] as string[],
   });
-  
+  const [search, setSearch] = useState("");
+
   const currentYear = new Date().getFullYear();
   const today = new Date();
   const eightMonthsAgo = new Date();
@@ -101,6 +104,20 @@ export default function Home() {
   const updateFilters = (newFilters: typeof filters) => {
     setFilters(newFilters);
     //console.log("Filtros en Home:", newFilters);
+  };
+
+  // Navigation handler for search, including filters as query params
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const queryParams = new URLSearchParams();
+    queryParams.set("search", search);
+    if (filters.tags.length)
+      queryParams.set("tags", filters.tags.join(','));
+    if (filters.devices.length)
+      queryParams.set("devices", filters.devices.join(','));
+    if (filters.platforms.length)
+      queryParams.set("platforms", filters.platforms.join(','));
+    router.push(`/explorer?${queryParams.toString()}`);
   };
 
   useEffect(() => {
@@ -137,19 +154,22 @@ export default function Home() {
           <h1 className="text-4xl font-bold mb-4 text-white">
             Bienvenido a la Mejor Plataforma Gamer
           </h1>
-          <div className="flex justify-center items-center gap-2">
+          <form onSubmit={handleSearch} className="flex justify-center items-center gap-2">
             <input 
               type="text" 
               placeholder="Buscar juegos por nombre, género o popularidad..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
               className="search-bar w-full max-w-md p-2 rounded border-2 border-red-600 bg-black text-white placeholder-red-300 focus:outline-none focus:border-red-600"
             />
             <button 
+              type="button"
               onClick={() => setShowFilters((prev) => !prev)}
               className="bg-black text-white border-2 border-red-600 p-2 rounded hover:bg-gray-800 focus:outline-none"
             >
               Filtros
             </button>
-          </div>
+          </form>
           {showFilters && <Filter onFiltersChange={updateFilters} />} {/* Aquí llamas a la componente Filter */}
           
           {/* Sección del video de presentación */}

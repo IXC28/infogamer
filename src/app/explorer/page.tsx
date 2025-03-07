@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import Filter from "../../components/Filter";
@@ -30,14 +31,18 @@ const games: Game[] = [
 ];
 
 export default function Explorer() {
-  const [searchQuery, setSearchQuery] = useState('');
+  const searchParams = useSearchParams();
+  const initialSearch = searchParams.get("search") || "";
+  const initialTags = searchParams.get("tags") ? searchParams.get("tags")!.split(",") : [];
+  const initialDevices = searchParams.get("devices") ? searchParams.get("devices")!.split(",") : [];
+  const initialPlatforms = searchParams.get("platforms") ? searchParams.get("platforms")!.split(",") : [];
+
+  const [searchQuery, setSearchQuery] = useState(initialSearch);
   const [showFilters, setShowFilters] = useState(false);
-  
-  // Nuevo estado para los filtros: tags, devices y platforms
   const [filters, setFilters] = useState({
-    tags: [] as string[],
-    devices: [] as string[],
-    platforms: [] as string[],
+    tags: initialTags,
+    devices: initialDevices,
+    platforms: initialPlatforms,
   });
 
   // Estado para la página actual
@@ -50,7 +55,7 @@ export default function Explorer() {
     console.log("Filtros actualizados en Explorer:", newFilters);
   };
   
-  // Filtra los juegos usando el texto ingresado (podrías extender este filtro con los filters)
+  // Filtra los juegos usando el texto ingresado y aplicando filtros si es necesario
   const filteredGames = games.filter(game =>
     game.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -67,16 +72,19 @@ export default function Explorer() {
   // Función para cambiar de página
   const goToPage = (page: number) => {
     setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' }); // Opcional: scroll hacia arriba al cambiar de página
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-
+  useEffect(() => {
+    console.log("filtros iniciales", filters);  
+    
+  }, [])
   return (
     <div className="min-h-screen bg-gray-900">
       <Navbar />
 
       <div className="container mx-auto p-4">
         {/* Barra de búsqueda y botón de filtros */}
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-4 gap-2">
           <input
             type="text"
             placeholder="Buscar juegos..."
@@ -89,7 +97,7 @@ export default function Explorer() {
           />
           <button
             onClick={() => setShowFilters(prev => !prev)}
-            className="ml-4 bg-black text-white border-2 border-red-600 p-2 rounded hover:bg-gray-800 focus:outline-none"
+            className="bg-black text-white border-2 border-red-600 p-2 rounded hover:bg-gray-800 focus:outline-none"
           >
             Filtros
           </button>
@@ -97,7 +105,7 @@ export default function Explorer() {
 
         {showFilters && (
           <div className="mb-4">
-            <Filter onFiltersChange={updateFilters} />
+            <Filter onFiltersChange={updateFilters} initialFilters={filters} />
           </div>
         )}
 
