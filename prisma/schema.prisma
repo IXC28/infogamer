@@ -13,8 +13,12 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model User {
+model Games {
   id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+  tittle String  @unique
+  img  String    @default("/maintenance.svg")
+  description String
+  gallery     String[] // Array of image URLs
+  links       String[]// Array of URLs
 }
+

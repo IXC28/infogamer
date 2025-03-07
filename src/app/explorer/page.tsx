@@ -9,23 +9,23 @@ import Filter from "../../components/Filter";
 interface Game {
   id: number;
   title: string;
-  image: string;
+  img: string;
 }
 
 // Datos de ejemplo para mostrar la lista de juegos
 const games: Game[] = [
-  { id: 1, title: "Juego Uno", image: "/images/game1.jpg" },
-  { id: 2, title: "Juego Dos", image: "/images/game2.jpg" },
-  { id: 3, title: "Juego Tres", image: "/images/game3.jpg" },
-  { id: 4, title: "Juego Cuatro", image: "/images/game4.jpg" },
-  { id: 5, title: "Juego Cinco", image: "/images/game5.jpg" },
-  { id: 6, title: "Juego Seis", image: "/images/game6.jpg" },
-  { id: 7, title: "Juego Siete", image: "/images/game7.jpg" },
-  { id: 8, title: "Juego Ocho", image: "/images/game8.jpg" },
-  { id: 9, title: "Juego Nueve", image: "/images/game9.jpg" },
-  { id: 10, title: "Juego Diez", image: "/images/game10.jpg" },
-  { id: 11, title: "Juego Once", image: "/images/game11.jpg" },
-  { id: 12, title: "Juego Doce", image: "/images/game12.jpg" },
+  { id: 1, title: "Juego Uno", img: "/imgs/game1.jpg" },
+  { id: 2, title: "Juego Dos", img: "/imgs/game2.jpg" },
+  { id: 3, title: "Juego Tres", img: "/imgs/game3.jpg" },
+  { id: 4, title: "Juego Cuatro", img: "/imgs/game4.jpg" },
+  { id: 5, title: "Juego Cinco", img: "/imgs/game5.jpg" },
+  { id: 6, title: "Juego Seis", img: "/imgs/game6.jpg" },
+  { id: 7, title: "Juego Siete", img: "/imgs/game7.jpg" },
+  { id: 8, title: "Juego Ocho", img: "/imgs/game8.jpg" },
+  { id: 9, title: "Juego Nueve", img: "/imgs/game9.jpg" },
+  { id: 10, title: "Juego Diez", img: "/imgs/game10.jpg" },
+  { id: 11, title: "Juego Once", img: "/imgs/game11.jpg" },
+  { id: 12, title: "Juego Doce", img: "/imgs/game12.jpg" },
   // Agrega más juegos según lo necesites...
 ];
 
@@ -110,11 +110,17 @@ export default function Explorer() {
                 className="flex items-center bg-black rounded p-4 hover:bg-gray-800 transition-colors"
               >
                 <img 
-                  src={game.image} 
+                  src={game.img} 
                   alt={game.title} 
                   className="w-16 h-16 rounded mr-4 object-cover"
                 />
                 <h3 className="text-white text-xl">{game.title}</h3>
+                <a 
+                  href={`/details/${game.id}`} 
+                  className="ml-auto bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors"
+                >
+                  Ver Detalles
+                </a>
               </div>
             ))
           ) : (
