@@ -19,7 +19,6 @@ interface Game {
   short_screenshots?: Screenshot[];
 }
 
-const API_KEY = "2180e28dd6484d1ab05574b1dc53f539";
 const BASE_URL = "https://api.rawg.io/api";
 
 // Componente de carrusel para mostrar un juego a la vez
@@ -93,6 +92,9 @@ export default function Home() {
   });
   const [search, setSearch] = useState("");
 
+  // Estado para almacenar el API Key obtenido del backend
+  const [apiKey, setApiKey] = useState<string>("");
+
   const currentYear = new Date().getFullYear();
   const today = new Date();
   const eightMonthsAgo = new Date();
@@ -120,25 +122,46 @@ export default function Home() {
     router.push(`/explorer?${queryParams.toString()}`);
   };
 
+  // Fetch the API key from our API route (/api/home)
   useEffect(() => {
+    async function fetchApiKey() {
+      try {
+        const res = await fetch("/api/home");
+        if (res.ok) {
+          const data = await res.json();
+          setApiKey(data.apiKey);
+        } else {
+          console.error("Error fetching API key");
+        }
+      } catch (error) {
+        console.error("Error fetching API key", error);
+      }
+    }
+    fetchApiKey();
+  }, []);
+
+  // Fetch games from RAWG only after obtaining the API key
+  useEffect(() => {
+    if (!apiKey) return;
+
     // Juegos más relevantes
-    fetch(`${BASE_URL}/games?key=${API_KEY}&dates=${startDate},${endDate}&ordering=-added&page_size=10`)
+    fetch(`${BASE_URL}/games?key=${apiKey}&dates=${startDate},${endDate}&ordering=-added&page_size=10`)
       .then((res) => res.json())
       .then((data) => setRelevantGames(data.results))
       .catch((err) => console.error("Error fetching relevant games:", err));
 
     // Juegos más nuevos
-    fetch(`${BASE_URL}/games?key=${API_KEY}&dates=${currentYear}-01-01,${currentYear}-12-31&ordering=-released&page_size=10`)
+    fetch(`${BASE_URL}/games?key=${apiKey}&dates=${currentYear}-01-01,${currentYear}-12-31&ordering=-released&page_size=10`)
       .then((res) => res.json())
       .then((data) => setNewGames(data.results))
       .catch((err) => console.error("Error fetching new games:", err));
 
     // Juegos más jugados
-    fetch(`${BASE_URL}/games?key=${API_KEY}&ordering=-added&page_size=10`)
+    fetch(`${BASE_URL}/games?key=${apiKey}&ordering=-added&page_size=10`)
       .then((res) => res.json())
       .then((data) => setAddedGames(data.results))
       .catch((err) => console.error("Error fetching added games:", err));
-  }, [startDate, endDate, currentYear]);
+  }, [apiKey, startDate, endDate, currentYear]);
 
   useEffect(() => {
     //filters contiene los filtros
