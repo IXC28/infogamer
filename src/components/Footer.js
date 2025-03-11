@@ -43,7 +43,7 @@ const Footer = () => {
         </div>
         {/* Logos */}
         <div className="mt-8 text-center">
-          <h3 className="text-lg font-bold mb-4 text-red-600">Plataformas Principales</h3>
+          <h3 className="text-lg font-bold mb-4 text-white">Plataformas Principales</h3>
           <div className="flex flex-wrap justify-center items-center space-x-4">
             <a href="https://store.steampowered.com" target="_blank" rel="noopener noreferrer">
               <Image src="/steam.svg" alt="Steam" width={40} height={40} className="hover:scale-110 transition-transform" />

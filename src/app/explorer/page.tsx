@@ -1,6 +1,5 @@
 "use client";
-
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
@@ -27,15 +26,14 @@ const games: Game[] = [
   { id: 10, title: "Juego Diez", img: "/imgs/game10.jpg" },
   { id: 11, title: "Juego Once", img: "/imgs/game11.jpg" },
   { id: 12, title: "Juego Doce", img: "/imgs/game12.jpg" },
-  // Agrega más juegos según lo necesites...
 ];
 
-export default function Explorer() {
+function ExplorerContent() {
   const searchParams = useSearchParams();
-  const initialSearch = searchParams.get("search") || "";
-  const initialTags = searchParams.get("tags") ? searchParams.get("tags")!.split(",") : [];
-  const initialDevices = searchParams.get("devices") ? searchParams.get("devices")!.split(",") : [];
-  const initialPlatforms = searchParams.get("platforms") ? searchParams.get("platforms")!.split(",") : [];
+  const initialSearch = searchParams?.get("search") || "";
+  const initialTags = searchParams?.get("tags") ? searchParams.get("tags")!.split(",") : [];
+  const initialDevices = searchParams?.get("devices") ? searchParams.get("devices")!.split(",") : [];
+  const initialPlatforms = searchParams?.get("platforms") ? searchParams.get("platforms")!.split(",") : [];
 
   const [searchQuery, setSearchQuery] = useState(initialSearch);
   const [showFilters, setShowFilters] = useState(false);
@@ -74,10 +72,11 @@ export default function Explorer() {
     setCurrentPage(page);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
   useEffect(() => {
     console.log("filtros iniciales", filters);  
-    
-  }, [])
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-900">
       <Navbar />
@@ -158,5 +157,13 @@ export default function Explorer() {
 
       <Footer />
     </div>
+  );
+}
+
+export default function Explorer() {
+  return (
+    <Suspense fallback={<p>Cargando...</p>}>
+      <ExplorerContent />
+    </Suspense>
   );
 }

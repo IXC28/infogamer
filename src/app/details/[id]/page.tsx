@@ -15,7 +15,7 @@ interface GameDetails {
 }
 
 export default function GameDetailsPage() {
-  const { id } = useParams();
+  const { id } = useParams() as { id: string };
   const [game, setGame] = useState<GameDetails | null>(null);
   const [displayImage, setDisplayImage] = useState<string>('');
   const [loading, setLoading] = useState(true);
