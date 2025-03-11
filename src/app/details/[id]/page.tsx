@@ -83,10 +83,12 @@ export default function GameDetailsPage() {
               </div>
             </div>
             {/* Sección de descripción, galería y links */}
-            <div className="md:w-1/2">
-              <p className="text-gray-300 text-base leading-relaxed mb-6">
-                {game.description}
-              </p>
+            <div className="md:w-1/2 p-4">
+              <div className="mb-6 max-h-64 overflow-y-auto">
+                <p className="text-gray-300 text-base leading-relaxed break-words whitespace-pre-line">
+                  {game.description}
+                </p>
+              </div>
               {game.gallery && game.gallery.length > 0 && (
                 <div className="mb-6">
                   <h2 className="text-2xl font-semibold text-white mb-3">Galería</h2>
