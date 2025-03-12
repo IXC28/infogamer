@@ -5,14 +5,17 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import Filter from "../../components/Filter";
 
-// Ejemplo de tipo para un juego (ajusta los campos según tu modelo)
+// Updated interface including filters fields
 interface Game {
   id: number;
-  tittle: string; // Nota: en la base de datos es "tittle"
+  tittle: string; // en la base de datos es "tittle"
   img: string;
   description: string;
   gallery: string[];
   links: string[];
+  tags: string[];
+  devices: string[];
+  platforms: string[];
 }
 
 function ExplorerContent() {
@@ -31,12 +34,14 @@ function ExplorerContent() {
     platforms: initialPlatforms,
   });
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true);
   const itemsPerPage = 10;
 
-  // Callback para actualizar la variable filters
+  // Callback for updating filters from Filter component
   const updateFilters = (newFilters: typeof filters) => {
     setFilters(newFilters);
     console.log("Filtros actualizados en Explorer:", newFilters);
+    setCurrentPage(1);
   };
 
   useEffect(() => {
@@ -51,15 +56,40 @@ function ExplorerContent() {
         }
       } catch (error) {
         console.error("Error al obtener juegos", error);
+      } finally {
+        setLoading(false);
       }
     }
     fetchGames();
   }, []);
 
-  // Filtra los juegos usando el texto ingresado y aplicando filtros si es necesario
-  const filteredGames = games.filter(game =>
-    game.tittle.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Filter games based on search query and filters (case-insensitive)
+  const filteredGames = games.filter(game => {
+    const matchesSearch = game.tittle.toLowerCase().includes(searchQuery.toLowerCase());
+
+    const matchesTags =
+      filters.tags.length === 0 ||
+      (game.tags &&
+        filters.tags.some(filterTag =>
+          game.tags.some(gtag => gtag.toLowerCase() === filterTag.toLowerCase())
+        ));
+
+    const matchesDevices =
+      filters.devices.length === 0 ||
+      (game.devices &&
+        filters.devices.some(filterDevice =>
+          game.devices.some(gDevice => gDevice.toLowerCase() === filterDevice.toLowerCase())
+        ));
+
+    const matchesPlatforms =
+      filters.platforms.length === 0 ||
+      (game.platforms &&
+        filters.platforms.some(filterPlatform =>
+          game.platforms.some(gPlatform => gPlatform.toLowerCase() === filterPlatform.toLowerCase())
+        ));
+
+    return matchesSearch && matchesTags && matchesDevices && matchesPlatforms;
+  });
 
   const totalPages = Math.ceil(filteredGames.length / itemsPerPage);
   const currentGames = filteredGames.slice(
@@ -72,16 +102,12 @@ function ExplorerContent() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  useEffect(() => {
-    console.log("Filtros iniciales", filters);
-  }, []);
-
   return (
     <div>
       <div className="min-h-screen bg-gray-900">
         <Navbar />
         <div className="container mx-auto p-4">
-          {/* Barra de búsqueda y botón de filtros */}
+          {/* Search bar and filter toggle */}
           <div className="flex items-center justify-between mb-4 gap-2">
             <input
               type="text"
@@ -107,9 +133,11 @@ function ExplorerContent() {
             </div>
           )}
 
-          {/* Lista de juegos (paginada) */}
+          {/* Paginated game list */}
           <div className="space-y-4">
-            {currentGames.length > 0 ? (
+            {loading ? (
+              <p className="text-white">Cargando...</p>
+            ) : currentGames.length > 0 ? (
               currentGames.map(game => (
                 <div
                   key={game.id}
@@ -130,11 +158,11 @@ function ExplorerContent() {
                 </div>
               ))
             ) : (
-              <p className="text-white">Cargando...</p>
+              <p className="text-white">No se encontraron juegos.</p>
             )}
           </div>
 
-          {/* Controles de paginación */}
+          {/* Pagination controls */}
           {totalPages > 1 && (
             <div className="mt-8 flex justify-center space-x-2">
               {Array.from({ length: totalPages }, (_, idx) => (
@@ -142,8 +170,8 @@ function ExplorerContent() {
                   key={idx + 1}
                   onClick={() => goToPage(idx + 1)}
                   className={`px-3 py-1 rounded ${
-                    currentPage === idx + 1
-                      ? "bg-red-600 text-white"
+                    currentPage === idx + 1 
+                      ? "bg-red-600 text-white" 
                       : "bg-gray-700 text-red-300 hover:bg-gray-600"
                   }`}
                 >

@@ -177,17 +177,23 @@ export default function Home() {
           <h1 className="text-4xl font-bold mb-4 text-white">
             Bienvenido a la Mejor Plataforma Gamer
           </h1>
-          <form onSubmit={handleSearch} className="flex justify-center items-center gap-2">
+          <form onSubmit={handleSearch} className="flex flex-col sm:flex-row justify-center items-center gap-2">
             <input 
               type="text" 
               placeholder="Buscar juegos por nombre, género o popularidad..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="search-bar w-full max-w-md p-2 rounded border-2 border-red-600 bg-black text-white placeholder-red-300 focus:outline-none focus:border-red-600"
+              className="w-full max-w-md p-2 rounded border-2 border-red-600 bg-black text-white placeholder-red-300 focus:outline-none focus:border-red-600"
             />
             <button 
+              type="submit"
+              className="bg-red-600 text-white border-2 border-red-600 p-2 rounded hover:bg-red-700 focus:outline-none"
+            >
+              Buscar
+            </button>
+            <button 
               type="button"
-              onClick={() => setShowFilters((prev) => !prev)}
+              onClick={() => setShowFilters(prev => !prev)}
               className="bg-black text-white border-2 border-red-600 p-2 rounded hover:bg-gray-800 focus:outline-none"
             >
               Filtros

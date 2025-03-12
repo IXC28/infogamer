@@ -14,11 +14,14 @@ generator client {
 }
 
 model Games {
-  id    Int     @id @default(autoincrement())
-  tittle String  @unique
-  img  String    @default("/maintenance.svg")
+  id          Int      @id @default(autoincrement())
+  tittle      String   @unique
+  img         String   @default("/maintenance.svg")
   description String
-  gallery     String[] // Array of image URLs
-  links       String[]// Array of URLs
+  gallery     String[]
+  links       String[]
+  tags        String[] // For filtering by tags (e.g., "Action", "Adventure", etc.)
+  devices     String[] // For filtering by devices (e.g., "PC", "Xbox", etc.)
+  platforms   String[] // For filtering by platforms (e.g., "Steam", "Epic", etc.)
 }
 
