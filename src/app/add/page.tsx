@@ -3,6 +3,37 @@ import React, { useState } from "react";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 
+const availableTags = [
+  "Indie",
+  "Singleplayer",
+  "Action",
+  "Adventure",
+  "Casual",
+  "Competitive",
+  "2D",
+  "MMORPGs",
+  "Survival",
+  "Acción",
+  "Aventura",
+  "Arcade",
+  "Deportivo",
+  "Estrategia",
+  "Simulación",
+  "Juegos de mesa",
+  "Juegos musicales",
+  "Sandbox",
+  "Estrategia en tiempo real (RTS)",
+  "Shooters",
+  "MOBA",
+  "Juegos de rol (RPG)",
+  "Puzzles",
+  "Juegos de fiesta",
+  "Acción-aventura",
+];
+
+const availableDevices = ["PC", "Playstation", "Xbox", "Nintendo"];
+const availablePlatforms = ["Steam", "Epic", "Playstation", "Nintendo", "Xbox"];
+
 export default function AddGamePage() {
   // Estado para protección por contraseña
   const [accessGranted, setAccessGranted] = useState(false);
@@ -15,10 +46,23 @@ export default function AddGamePage() {
   const [description, setDescription] = useState("");
   const [gallery, setGallery] = useState("");
   const [links, setLinks] = useState("");
-  // Nuevos estados para filtros
+  // Estados para filtros
   const [tags, setTags] = useState<string[]>([]);
   const [devices, setDevices] = useState<string[]>([]);
   const [platforms, setPlatforms] = useState<string[]>([]);
+
+  const handleCheckboxChange = (
+    value: string,
+    setFn: React.Dispatch<React.SetStateAction<string[]>>,
+    currentValues: string[],
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    if (e.target.checked) {
+      setFn([...currentValues, value]);
+    } else {
+      setFn(currentValues.filter((item) => item !== value));
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,8 +70,8 @@ export default function AddGamePage() {
       title, // Se mapea a "tittle" en la BD.
       img,
       description,
-      gallery: gallery.split(",").map(url => url.trim()).filter(url => url !== ""),
-      links: links.split(",").map(url => url.trim()).filter(url => url !== ""),
+      gallery: gallery.split(",").map((url) => url.trim()).filter((url) => url !== ""),
+      links: links.split(",").map((url) => url.trim()).filter((url) => url !== ""),
       tags,
       devices,
       platforms,
@@ -52,7 +96,6 @@ export default function AddGamePage() {
       setTags([]);
       setDevices([]);
       setPlatforms([]);
-      // Acción adicional (ej: redireccionamiento).
     } catch (error) {
       console.error(error);
     }
@@ -70,19 +113,14 @@ export default function AddGamePage() {
         setAccessGranted(true);
       } else {
         setPasswordError("Contraseña incorrecta");
-        setTimeout(() => {
-          setPasswordError("");
-        }, 5000);
+        setTimeout(() => setPasswordError(""), 5000);
       }
     } catch (error) {
       setPasswordError("Error al verificar la contraseña");
-      setTimeout(() => {
-        setPasswordError("");
-      }, 5000);
+      setTimeout(() => setPasswordError(""), 5000);
     }
   };
 
-  // Muestra modal de contraseña si el acceso no ha sido concedido.
   if (!accessGranted) {
     return (
       <div className="min-h-screen bg-gray-900 flex items-center justify-center">
@@ -166,79 +204,58 @@ export default function AddGamePage() {
               className="w-full p-2 rounded border border-gray-700 bg-gray-800 text-white"
             />
           </div>
-          {/* Select para Tags */}
+
+          {/* Grupo de checkboxes para Tags */}
           <div>
-            <label className="block text-white mb-2">Tags</label>
-            <select
-              multiple
-              value={tags}
-              onChange={(e) =>
-                setTags(Array.from(e.target.selectedOptions).map(option => option.value))
-              }
-              className="w-full p-2 rounded border border-gray-700 bg-gray-800 text-white"
-            >
-              <option value="Indie">Indie</option>
-              <option value="Singleplayer">Singleplayer</option>
-              <option value="Action">Action</option>
-              <option value="Adventure">Adventure</option>
-              <option value="Casual">Casual</option>
-              <option value="Competitive">Competitive</option>
-              <option value="2D">2D</option>
-              <option value="MMORPGs">MMORPGs</option>
-              <option value="Survival">Survival</option>
-              <option value="Acción">Acción</option>
-              <option value="Aventura">Aventura</option>
-              <option value="Arcade">Arcade</option>
-              <option value="Deportivo">Deportivo</option>
-              <option value="Estrategia">Estrategia</option>
-              <option value="Simulación">Simulación</option>
-              <option value="Juegos de mesa">Juegos de mesa</option>
-              <option value="Juegos musicales">Juegos musicales</option>
-              <option value="Sandbox">Sandbox</option>
-              <option value="Estrategia en tiempo real (RTS)">Estrategia en tiempo real (RTS)</option>
-              <option value="Shooters">Shooters</option>
-              <option value="MOBA">MOBA</option>
-              <option value="Juegos de rol (RPG)">Juegos de rol (RPG)</option>
-              <option value="Puzzles">Puzzles</option>
-              <option value="Juegos de fiesta">Juegos de fiesta</option>
-              <option value="Acción-aventura">Acción-aventura</option>
-            </select>
+            <p className="block text-white mb-2">Tags</p>
+            {availableTags.map((option) => (
+              <label key={option} className="block text-white">
+                <input
+                  type="checkbox"
+                  className="mr-1"
+                  value={option}
+                  checked={tags.includes(option)}
+                  onChange={(e) => handleCheckboxChange(option, setTags, tags, e)}
+                />
+                {option}
+              </label>
+            ))}
           </div>
-          {/* Select para Devices */}
+
+          {/* Grupo de checkboxes para Devices */}
           <div>
-            <label className="block text-white mb-2">Devices</label>
-            <select
-              multiple
-              value={devices}
-              onChange={(e) =>
-                setDevices(Array.from(e.target.selectedOptions).map(option => option.value))
-              }
-              className="w-full p-2 rounded border border-gray-700 bg-gray-800 text-white"
-            >
-              <option value="PC">PC</option>
-              <option value="Playstation">Playstation</option>
-              <option value="Xbox">Xbox</option>
-              <option value="Nintendo">Nintendo</option>
-            </select>
+            <p className="block text-white mb-2">Devices</p>
+            {availableDevices.map((option) => (
+              <label key={option} className="block text-white">
+                <input
+                  type="checkbox"
+                  className="mr-1"
+                  value={option}
+                  checked={devices.includes(option)}
+                  onChange={(e) => handleCheckboxChange(option, setDevices, devices, e)}
+                />
+                {option}
+              </label>
+            ))}
           </div>
-          {/* Select para Platforms */}
+
+          {/* Grupo de checkboxes para Platforms */}
           <div>
-            <label className="block text-white mb-2">Platforms</label>
-            <select
-              multiple
-              value={platforms}
-              onChange={(e) =>
-                setPlatforms(Array.from(e.target.selectedOptions).map(option => option.value))
-              }
-              className="w-full p-2 rounded border border-gray-700 bg-gray-800 text-white"
-            >
-              <option value="Steam">Steam</option>
-              <option value="Epic">Epic</option>
-              <option value="Playstation">Playstation</option>
-              <option value="Nintendo">Nintendo</option>
-              <option value="Xbox">Xbox</option>
-            </select>
+            <p className="block text-white mb-2">Platforms</p>
+            {availablePlatforms.map((option) => (
+              <label key={option} className="block text-white">
+                <input
+                  type="checkbox"
+                  className="mr-1"
+                  value={option}
+                  checked={platforms.includes(option)}
+                  onChange={(e) => handleCheckboxChange(option, setPlatforms, platforms, e)}
+                />
+                {option}
+              </label>
+            ))}
           </div>
+
           <button type="submit" className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors">
             Agregar Juego
           </button>
