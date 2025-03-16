@@ -197,8 +197,6 @@ export default function AddGamePage() {
             <input
               type="text"
               id="links"
-              type="text"
-              id="links"
               value={links}
               onChange={(e) => setLinks(e.target.value)}
               className="w-full p-2 rounded border border-gray-700 bg-gray-800 text-white"
