@@ -29,7 +29,7 @@ const availableTags = [
   "Acción-aventura",
 ];
 
-const availableDevices = ["PC", "Playstation", "Xbox", "Nintendo"];
+const availableDevices = ["PC", "Playstation", "Xbox", "Nintendo", "Mobile"];
 const availablePlatforms = ["Steam", "Epic", "Playstation", "Nintendo", "Xbox"];
 
 export default function AddGamePage() {

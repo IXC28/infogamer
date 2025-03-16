@@ -112,6 +112,14 @@ const Filter: React.FC<FilterProps> = ({
             />
             Nintendo
           </label>
+          <label className="block">
+            <input
+              type="checkbox"
+              onChange={(e) => handleFilterChange("devices", "Nintendo", e)}
+              className="mr-2"
+            />
+            Mobile
+          </label>
         </div>
         {/* 3 - Por plataforma */}
         <div className="text-left">
