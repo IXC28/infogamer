@@ -28,6 +28,8 @@ export default function GameDetailsPage() {
     if (link.includes("xbox.com")) return "/xbox.svg";
     if (link.includes("playstation.com")) return "/playstation.svg";
     if (link.includes("nintendo.com")) return "/nintendo.svg";
+    if (link.includes("play.google.com")) return "/playstore.svg";
+
     return "/globe.svg";
   };
 
@@ -38,6 +40,7 @@ export default function GameDetailsPage() {
     if (link.includes("xbox.com")) return "Xbox";
     if (link.includes("playstation.com")) return "PlayStation";
     if (link.includes("nintendo.com")) return "Nintendo";
+    if (link.includes("play.google.com")) return "Playstore";
     return "Otro";
   };
 
