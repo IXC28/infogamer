@@ -56,22 +56,7 @@ const Filter: React.FC<FilterProps> = ({
             />
             Singleplayer
           </label>
-          <label className="block mb-2">
-            <input
-              type="checkbox"
-              onChange={(e) => handleFilterChange("tags", "Action", e)}
-              className="mr-2"
-            />
-            Action
-          </label>
-          <label className="block mb-2">
-            <input
-              type="checkbox"
-              onChange={(e) => handleFilterChange("tags", "Adventure", e)}
-              className="mr-2"
-            />
-            Adventure
-          </label>
+
           <label className="block mb-2">
             <input
               type="checkbox"

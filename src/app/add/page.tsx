@@ -6,8 +6,6 @@ import Footer from "../../components/Footer";
 const availableTags = [
   "Indie",
   "Singleplayer",
-  "Action",
-  "Adventure",
   "Casual",
   "Competitive",
   "2D",
@@ -197,6 +195,8 @@ export default function AddGamePage() {
           <div>
             <label htmlFor="links" className="block text-white mb-2">Links (URLs separadas por coma)</label>
             <input
+              type="text"
+              id="links"
               type="text"
               id="links"
               value={links}
