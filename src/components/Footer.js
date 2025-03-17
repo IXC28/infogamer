@@ -63,6 +63,9 @@ const Footer = () => {
             <a href="https://www.xbox.com" target="_blank" rel="noopener noreferrer">
               <Image src="/xbox.svg" alt="Xbox" width={40} height={40} className="hover:scale-110 transition-transform" />
             </a>
+            <a href="https://play.google.com/store" target="_blank" rel="noopener noreferrer">
+              <Image src="/playstore.svg" alt="Playstore" width={40} height={40} className="hover:scale-110 transition-transform" />
+            </a>
           </div>
         </div>
       </div>

@@ -30,8 +30,7 @@ const availableTags = [
 ];
 
 const availableDevices = ["PC", "Playstation", "Xbox", "Nintendo", "Mobile"];
-const availablePlatforms = ["Steam", "Epic", "Playstation", "Nintendo", "Xbox"];
-
+const availablePlatforms = ["Steam", "Epic", "Playstation", "Nintendo", "Xbox", "Playstore"];
 export default function AddGamePage() {
   // Estado para protección por contraseña
   const [accessGranted, setAccessGranted] = useState(false);

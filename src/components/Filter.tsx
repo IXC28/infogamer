@@ -164,6 +164,14 @@ const Filter: React.FC<FilterProps> = ({
             />
             Xbox
           </label>
+          <label className="block">
+    <input
+      type="checkbox"
+      onChange={(e) => handleFilterChange("platforms", "Playstore", e)}
+      className="mr-2"
+    />
+    Playstore
+  </label>
         </div>
       </div>
     </div>

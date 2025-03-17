@@ -202,12 +202,17 @@ export default function Home() {
           {showFilters && <Filter onFiltersChange={updateFilters} />} {/* Aquí llamas a la componente Filter */}
           
           {/* Sección del video de presentación */}
-          <section className="video-presentation relative w-4/5 mx-auto h-72 md:h-[500px] overflow-hidden shadow-2xl transition-transform duration-300 hover:scale-105 mt-10">
-            <img 
-              className="w-full h-full object-cover rounded-2xl" 
-              src="/presentacion.gif" 
-              alt="Presentación del gaming" 
-            />
+          <section className="video-presentation relative w-4/5 mx-auto h-72 md:h-[700px] overflow-hidden shadow-2xl transition-transform duration-300 hover:scale-105 mt-10">
+            <video
+              className="w-full h-full object-cover rounded-2xl"
+              src="/videopr.mp4"
+              autoPlay
+              muted
+              loop
+              playsInline
+            >
+              Tu navegador no soporta el elemento de video.
+            </video>
             <div className="absolute inset-0 opacity-40"></div>
             <div className="absolute inset-0 flex items-center justify-center">
               {/* Contenido adicional, si se requiere */}
