@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
+import RichTextEditor from "../../components/RichTextEditor";
 
 // Arrays de opciones (igual que en addGames)
 const availableTags = [
@@ -284,14 +285,7 @@ export default function EditGamePage() {
                         <label htmlFor="description" className="block text-white mb-2">
                           Descripción
                         </label>
-                        <textarea
-                          id="description"
-                          value={description}
-                          onChange={(e) => setDescription(e.target.value)}
-                          className="w-full p-2 rounded border border-gray-700 bg-gray-800 text-white"
-                          rows={4}
-                          required
-                        ></textarea>
+                        <RichTextEditor value={description} onChange={setDescription} />
                       </div>
                       <div>
                         <label htmlFor="gallery" className="block text-white mb-2">

@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
+import RichTextEditor from "../../components/RichTextEditor";
 
 const availableTags = [
   "Indie",
@@ -66,7 +67,7 @@ export default function AddGamePage() {
     const game = {
       title, // Se mapea a "tittle" en la BD.
       img,
-      description,
+      description, // Guardado en HTML
       gallery: gallery.split(",").map((url) => url.trim()).filter((url) => url !== ""),
       links: links.split(",").map((url) => url.trim()).filter((url) => url !== ""),
       tags,
@@ -172,15 +173,14 @@ export default function AddGamePage() {
           </div>
           <div>
             <label htmlFor="description" className="block text-white mb-2">Descripción</label>
-            <textarea
-              id="description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              className="w-full p-2 rounded border border-gray-700 bg-gray-800 text-white"
-              rows={4}
-              required
-            />
+            <RichTextEditor value={description} onChange={setDescription} />
           </div>
+            <div className="mb-6 max-h-96 overflow-y-auto prose dark:prose-invert">
+                  <div
+                dangerouslySetInnerHTML={{ __html: description }}
+                suppressHydrationWarning
+              />
+            </div>
           <div>
             <label htmlFor="gallery" className="block text-white mb-2">Galería (URLs separadas por coma)</label>
             <input

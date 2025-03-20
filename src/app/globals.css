@@ -23,4 +23,76 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* paleta de colores #40FFDC,#00A9D4,#1C3166,#240047,#1C0021,#40FFDC,#00A9D4,#1C3166 */
+/* paleta de colores: #40FFDC, #00A9D4, #1C3166, #240047, #1C0021, #40FFDC, #00A9D4, #1C3166 */
+
+/* Estilos para el Rich Text Editor */
+
+/* Alineaciones */
+.ql-align-center {
+  text-align: center;
+}
+
+.ql-align-right {
+  text-align: right;
+}
+
+.ql-align-justify {
+  text-align: justify;
+}
+
+/* Listas (viñetas y numeradas) en el editor Quill */
+.ql-editor ul {
+  list-style-type: disc;
+  margin-left: 1.5rem;
+}
+
+.ql-editor ol {
+  list-style-type: decimal;
+  margin-left: 1.5rem;
+}
+
+/* Estilos para contenido con la clase "prose" (Tailwind Typography) */
+.prose ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+}
+
+.prose ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+}
+
+.prose ul li::marker {
+  color: var(--foreground);
+}
+
+.dark .prose ul li::marker {
+  color: var(--foreground);
+}
+
+/* Encabezados para que se vean grandes y con presencia */
+.ql-editor h1,
+.prose h1 {
+  font-size: 2.25rem; /* Tamaño grande, equivalente a text-4xl */
+  font-weight: 700;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.ql-editor h2,
+.prose h2 {
+  font-size: 1.875rem; /* text-3xl */
+  font-weight: 600;
+  margin-top: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.ql-editor h3,
+.prose h3 {
+  font-size: 1.5rem; /* text-2xl */
+  font-weight: 500;
+  margin-top: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Opcionales: estilos para h4, h5 y h6 pueden agregarse si es necesario */

@@ -29,7 +29,6 @@ export default function GameDetailsPage() {
     if (link.includes("playstation.com")) return "/playstation.svg";
     if (link.includes("nintendo.com")) return "/nintendo.svg";
     if (link.includes("play.google.com")) return "/playstore.svg";
-
     return "/globe.svg";
   };
 
@@ -74,70 +73,73 @@ export default function GameDetailsPage() {
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-6 text-center">
             {game.tittle}
           </h1>
-          <div className="flex flex-col md:flex-row gap-8">
-            {/* Sección de imagen principal */}
-            <div className="md:w-1/2 flex items-center justify-center">
-              <div className="w-full max-w-md overflow-hidden rounded-lg shadow-lg">
-                <img
-                  src={displayImage}
-                  alt={game.tittle}
-                  className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-                />
-              </div>
-            </div>
-            {/* Sección de descripción, galería y links */}
-            <div className="md:w-1/2 p-4">
-              <div className="mb-6 max-h-64 overflow-y-auto">
-                <p className="text-gray-300 text-base leading-relaxed break-words whitespace-pre-line">
-                  {game.description}
-                </p>
-              </div>
-              {game.gallery && game.gallery.length > 0 && (
-                <div className="mb-6">
-                  <h2 className="text-2xl font-semibold text-white mb-3">Galería</h2>
-                  <div className="grid grid-cols-3 gap-3">
-                    {game.gallery.map((url, idx) => (
-                      <div
-                        key={idx}
-                        className="border border-gray-700 rounded overflow-hidden cursor-pointer transition-transform duration-300 hover:scale-105"
-                        onMouseEnter={() => setDisplayImage(url)}
-                        onMouseLeave={() => setDisplayImage(game.img)}
-                      >
-                        <img
-                          src={url}
-                          alt={`Galería ${idx + 1}`}
-                          className="w-full h-24 object-cover"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-              {game.links && game.links.length > 0 && (
-                <div className="mb-6">
-                  <h2 className="text-2xl font-semibold text-white mb-3">Links Oficiales</h2>
-                  <div className="flex flex-wrap gap-3">
-                    {game.links.map((link, idx) => (
-                      <a
-                        key={idx}
-                        href={link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors"
-                      >
-                        <img 
-                          src={getPlatformIcon(link)} 
-                          alt={getPlatformLabel(link)} 
-                          className="w-6 h-6"
-                        />
-                        <span>{getPlatformLabel(link)}</span>
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              )}
+          {/* Imagen principal con tamaño fijo */}
+          <div className="flex justify-center mb-6">
+            <div className="w-auto h-80 overflow-hidden rounded-lg shadow-lg">
+              <img
+                src={displayImage}
+                alt={game.tittle}
+                className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+              />
             </div>
           </div>
+          {/* Galería */}
+          {game.gallery && game.gallery.length > 0 && (
+            <div className="mb-6">
+              <h2 className="text-2xl font-semibold text-white mb-3 text-center">
+                Galería
+              </h2>
+              <div className="grid grid-cols-3 gap-3">
+                {game.gallery.map((url, idx) => (
+                  <div
+                    key={idx}
+                    className="border border-gray-700 rounded overflow-hidden cursor-pointer transition-transform duration-300 hover:scale-105"
+                    onMouseEnter={() => setDisplayImage(url)}
+                    onMouseLeave={() => setDisplayImage(game.img)}
+                  >
+                    <img
+                      src={url}
+                      alt={`Galería ${idx + 1}`}
+                      className="w-full h-24 object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          {/* Descripción ampliada */}
+          <div className="mb-6 max-h-96 overflow-y-auto prose dark:prose-invert">
+            <div
+              dangerouslySetInnerHTML={{ __html: game.description }}
+              suppressHydrationWarning
+            />
+          </div>
+          {/* Links Oficiales */}
+          {game.links && game.links.length > 0 && (
+            <div className="mb-6">
+              <h2 className="text-2xl font-semibold text-white mb-3 text-center">
+                Links Oficiales
+              </h2>
+              <div className="flex flex-wrap gap-3 justify-center">
+                {game.links.map((link, idx) => (
+                  <a
+                    key={idx}
+                    href={link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors"
+                  >
+                    <img
+                      src={getPlatformIcon(link)}
+                      alt={getPlatformLabel(link)}
+                      className="w-6 h-6"
+                    />
+                    <span>{getPlatformLabel(link)}</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
       <Footer />
