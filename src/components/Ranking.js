@@ -20,7 +20,7 @@ const Ranking = () => {
     <div className="ranking">
       <h1>Ranking y Estadísticas</h1>
       <section className="ranking-section">
-        <h2>Top 10 Juegos Más Descargados</h2>
+        <h2>Top 10 Más Descargados</h2>
         <ul>
           {topDownloads.map(game => (
             <li key={game.id}>{game.name} - {game.downloads} descargas</li>
@@ -28,7 +28,7 @@ const Ranking = () => {
         </ul>
       </section>
       <section className="ranking-section">
-        <h2>Top 10 Juegos Más Jugados</h2>
+        <h2>Top 10 Más Jugados</h2>
         <ul>
           {topPlayed.map(game => (
             <li key={game.id}>{game.name} - {game.plays} jugados</li>

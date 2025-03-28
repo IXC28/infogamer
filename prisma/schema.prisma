@@ -25,3 +25,10 @@ model Games {
   platforms   String[] // For filtering by platforms (e.g., "Steam", "Epic", etc.)
 }
 
+model Ranking {
+  id                    Int     @id @default(1)
+  populares             Int[]
+  lanzamientosRecientes Int[]
+  mejorValorados        Int[]
+  recomendaciones       Int[]
+}
