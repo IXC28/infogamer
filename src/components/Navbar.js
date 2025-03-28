@@ -5,16 +5,22 @@ const Navbar = () => {
 
   return (
     <nav className="bg-gradient-to-r from-black via-red-600 to-black">
-      <div className="max-w-7xl mx-auto px-5">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
+      {/* Usamos un contenedor a pantalla completa para que el logo quede al borde */}
+      <div className="w-full">
+        <div className="flex items-center justify-between h-16 px-0">
+          {/* Logo sin padding a la izquierda */}
           <div className="flex-shrink-0">
-            <a href="/" className="text-white text-2xl font-bold">
-              InfoGamer
+            <a href="/" className="text-white text-2xl font-bold flex items-center">
+              <img
+                src="/logo.svg"
+                alt="logo"
+                className="w-16 h-16 inline-block rounded-b-sm"
+              />
+              <span className="ml-2">InfoGamer</span>
             </a>
           </div>
           {/* Desktop Menu */}
-          <ul className="hidden md:flex space-x-4">
+          <ul className="hidden md:flex space-x-4 pr-5">
             <li>
               <a
                 href="/"
@@ -57,7 +63,7 @@ const Navbar = () => {
             </li>
           </ul>
           {/* Mobile Menu Button */}
-          <div className="md:hidden">
+          <div className="md:hidden pr-5">
             <button
               onClick={() => setMenuOpen(!menuOpen)}
               className="text-white hover:text-red-500 focus:outline-none"
@@ -77,7 +83,7 @@ const Navbar = () => {
         {/* Mobile Menu */}
         {menuOpen && (
           <div className="md:hidden">
-            <ul className="flex flex-col space-y-2">
+            <ul className="flex flex-col space-y-2 pl-5 pr-5 pb-3">
               <li>
                 <a
                   href="/"

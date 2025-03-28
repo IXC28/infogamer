@@ -15,6 +15,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "InfoGamer",
   description: "Aquí encontrarás información sobre los mejores juegos",
+  icons: {
+    icon: "/logo.svg",
+  },
 };
 
 export default function RootLayout({
