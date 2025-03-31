@@ -64,9 +64,10 @@ const RankingSection: React.FC<RankingSectionProps> = ({ title, games }) => {
                   />
                   <h3 className="text-white text-xl text-center">{game.title}</h3>
                   {game.description && (
-                    <p className="text-white text-sm mt-2 line-clamp-3">
-                      {game.description}
-                    </p>
+                    <div
+                      className="text-white text-sm mt-2 line-clamp-3"
+                      dangerouslySetInnerHTML={{ __html: game.description }}
+                    />
                   )}
                 </div>
               </Link>
