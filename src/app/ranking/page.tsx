@@ -62,7 +62,6 @@ const RankingSection: React.FC<RankingSectionProps> = ({ title, games }) => {
                     alt={game.title}
                     className="w-full h-40 object-cover rounded mb-2"
                   />
-                  <h3 className="text-white text-xl text-center">{game.title}</h3>
                   {game.description && (
                     <div
                       className="text-white text-sm mt-2 line-clamp-3"
