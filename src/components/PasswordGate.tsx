@@ -42,6 +42,11 @@ export default function PasswordGate({ children }: PasswordGateProps) {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                verifyPassword();
+              }
+            }}
             className="w-full p-2 mb-2 rounded border border-gray-700 bg-gray-800 text-white"
             placeholder="Contraseña"
           />

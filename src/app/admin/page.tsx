@@ -58,6 +58,7 @@ export default function EditGamePage() {
 
   // Estados para la edición:
   const [games, setGames] = useState<any[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const [selectedGameId, setSelectedGameId] = useState<number | null>(null);
   const [title, setTitle] = useState("");
   const [img, setImg] = useState("");
@@ -190,6 +191,11 @@ export default function EditGamePage() {
     }
   };
 
+  // Filtrar juegos por título según searchTerm (case-insensitive)
+  const filteredGames = games.filter((game) =>
+    game.tittle.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   if (!mounted) return null;
 
   return (
@@ -211,13 +217,23 @@ export default function EditGamePage() {
               </button>
             </Link>
           </div>
+          {/* Buscador para filtrar juegos por título */}
+          <div className="mb-6">
+            <input
+              type="text"
+              placeholder="Buscar juego por título..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full p-2 rounded border border-gray-700 bg-gray-800 text-white"
+            />
+          </div>
           {/* Lista de juegos */}
           <div className="mb-6">
             <h2 className="text-xl text-white mb-2">
               Selecciona un juego para editar
             </h2>
             <ul className="space-y-2">
-              {games.map((game) => (
+              {filteredGames.map((game) => (
                 <li key={game.id}>
                   <div
                     onClick={() => handleSelectGame(game)}

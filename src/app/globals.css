@@ -104,3 +104,22 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Estilos personalizados para la scrollbar */
+.scrollbar-thin {
+  scrollbar-width: thin; /* Para Firefox */
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px; /* Aumenta el ancho a 6px para mayor visibilidad */
+  height: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.5); /* Color un poco más opaco para destacarla */
+  border-radius: 9999px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}

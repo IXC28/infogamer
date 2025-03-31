@@ -108,7 +108,7 @@ export default function GameDetailsPage() {
             </div>
           )}
           {/* Descripción ampliada */}
-          <div className="mb-6 max-h-96 overflow-y-auto prose dark:prose-invert">
+          <div className="mb-6 max-h-96 overflow-y-auto prose dark:prose-invert pr-4 scrollbar-thin">
             <div
               dangerouslySetInnerHTML={{ __html: game.description }}
               suppressHydrationWarning

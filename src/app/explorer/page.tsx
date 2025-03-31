@@ -1,6 +1,7 @@
 "use client";
 import React, { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import Filter from "../../components/Filter";
@@ -63,7 +64,6 @@ function ExplorerContent() {
     fetchGames();
   }, []);
 
-  // Filter games based on search query and filters (case-insensitive)
   const filteredGames = games.filter(game => {
     const matchesSearch = game.tittle.toLowerCase().includes(searchQuery.toLowerCase());
 
@@ -139,9 +139,10 @@ function ExplorerContent() {
               <p className="text-white">Cargando...</p>
             ) : currentGames.length > 0 ? (
               currentGames.map(game => (
-                <div
+                <a
                   key={game.id}
                   className="flex items-center bg-black rounded p-4 hover:bg-gray-800 transition-colors"
+                  href={`/details/${game.id}`}
                 >
                   <img
                     src={game.img}
@@ -149,13 +150,7 @@ function ExplorerContent() {
                     className="w-16 h-16 rounded mr-4 object-cover"
                   />
                   <h3 className="text-white text-xl">{game.tittle}</h3>
-                  <a
-                    href={`/details/${game.id}`}
-                    className="ml-auto bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors"
-                  >
-                    Ver Detalles
-                  </a>
-                </div>
+                </a>
               ))
             ) : (
               <p className="text-white">No se encontraron juegos.</p>
